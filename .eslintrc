@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:mocha/recommended",
+    "prettier"
+  ],
+  "plugins": ["prettier", "mocha"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "no-console": "warn",
+    "no-unused-vars": "warn"
+  }
+}
+

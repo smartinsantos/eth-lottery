@@ -1,0 +1,19 @@
+# node
+node_modules
+
+# jest
+coverage
+
+# parcel
+.cache
+dist
+public
+
+# environment
+.env
+
+# misc
+.DS_Store
+.idea
+yarn-error.log
+
