@@ -74,8 +74,45 @@ describe('Lottery contract', function () {
         from: mockAccounts[0],
         value: web3.utils.toWei('0.001', 'ether')
       })
+      assert(false)
     } catch (error) {
-      assert.ok(error)
+      assert(error)
     }
+  })
+
+  it('only manager can call pickWinner', async function () {
+    try {
+      await mockLottery.methods.pickWinner().send({
+        from: mockAccounts[1]
+      })
+      assert(false)
+    } catch (error) {
+      assert(error)
+    }
+  })
+
+  it('sends money to the winner and resets the players array', async function () {
+    await mockLottery.methods.enter().send({
+      from: mockAccounts[0],
+      value: web3.utils.toWei('1', 'ether')
+    })
+
+    const initialBalance = await web3.eth.getBalance(mockAccounts[0])
+    await mockLottery.methods.pickWinner().send({
+      from: mockAccounts[0]
+    })
+    const finalBalance = await web3.eth.getBalance(mockAccounts[0])
+    // difference should be slightly less than 1 ether taking into account gas cost
+    assert(finalBalance - initialBalance > web3.utils.toWei('0.8', 'ether'))
+
+    // balance should be 0
+    const contractBalance = await web3.eth.getBalance(mockLottery.options.address)
+    assert.equal(0, contractBalance)
+
+    // players array should be reset
+    const players = await mockLottery.methods.getPlayers().call({
+      from: mockAccounts[0]
+    })
+    assert.equal(0, players.length)
   })
 })
